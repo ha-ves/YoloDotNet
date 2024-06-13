@@ -59,7 +59,7 @@
             var options = new ResizeOptions
             {
                 Size = new Size(w, h),
-                Mode = ResizeMode.Pad,
+                Mode = ResizeMode.Stretch,
                 PadColor = new Color(new Rgb24(0, 0, 0))
             };
 
