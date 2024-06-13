@@ -10,9 +10,18 @@
     /// <param name="cuda">Optional. Indicates whether to use CUDA for GPU acceleration (default is true).</param>
     /// <param name="primeGpu">Optional. Indicates whether to prime the GPU by allocating memory for faster initial inference (default is false).</param>
     /// <param name="gpuId">Optional. The GPU device ID to use when CUDA is enabled (default is 0).</param>
-    public class Yolo(string onnxModel, bool cuda = true, bool primeGpu = false, int gpuId = 0)
-        : YoloBase(onnxModel, cuda, primeGpu, gpuId)
+    public class Yolo : YoloBase
     {
+        public Yolo(string onnxModel, bool cuda = true, bool primeGpu = false, int gpuId = 0) : base(onnxModel, cuda, primeGpu, gpuId)
+        {
+
+        }
+
+        public Yolo(string onnxModel, SessionOptions sessionOptions, bool useGpu, bool allocateGpuMemory) : base(onnxModel, sessionOptions, useGpu, allocateGpuMemory)
+        {
+
+        }
+
         /// <summary>
         /// Run image classification on an Image.
         /// </summary>

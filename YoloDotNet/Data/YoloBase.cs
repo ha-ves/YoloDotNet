@@ -57,8 +57,30 @@
 
             _parallelOptions = new ParallelOptions { MaxDegreeOfParallelism = Environment.ProcessorCount };
 
-            if (useCuda && allocateGpuMemory)
-                _session.AllocateGpuMemory(_ortIoBinding, _runOptions);
+            //if (useCuda && allocateGpuMemory)
+                //_session.AllocateGpuMemory(_ortIoBinding, _runOptions);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of Yolo with custom ONNX Inference Session Options
+        /// </summary>
+        /// <param name="onnxModel">The path to the ONNX model file to use.</param>
+        /// <param name="sessionOptions">ONNX Runtime session options to use.</param>
+        public YoloBase(string onnxModel, SessionOptions sessionOptions, bool useGpu, bool allocateGpuMemory)
+        {
+            #warning using _useCuda here might be bad because Video process use it.
+            _useCuda = useGpu;
+            _session = new InferenceSession(onnxModel, sessionOptions);
+
+            _runOptions = new RunOptions();
+            _ortIoBinding = _session.CreateIoBinding();
+
+            OnnxModel = _session.GetOnnxProperties();
+
+            _parallelOptions = new ParallelOptions { MaxDegreeOfParallelism = Environment.ProcessorCount };
+
+            //if (_useCuda && allocateGpuMemory)
+                //_session.AllocateGpuMemory(_ortIoBinding, _runOptions);
         }
 
         /// <summary>
