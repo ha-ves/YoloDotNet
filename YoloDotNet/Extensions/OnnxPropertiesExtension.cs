@@ -13,8 +13,8 @@
 
             var modelType = GetModelType(metaData[NameOf(MetaData.Task)]);
 
-            var inputName = session.InputNames[0];
-            var outputNames = session.OutputNames.ToList();
+            var inputName = session.InputMetadata.First().Key;
+            var outputNames = session.OutputMetadata.Keys.ToList();
 
             return new OnnxModel()
             {
