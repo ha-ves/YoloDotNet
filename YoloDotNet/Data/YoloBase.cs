@@ -93,7 +93,7 @@
         /// <param name="expectedModel"></param>
         protected List<T> Run<T>(Image img, double confidence, double iouThreshold, ModelType expectedModel, bool preloadGpu = false)
         {
-            VerifyExpectedModelType(expectedModel);
+            //VerifyExpectedModelType(expectedModel);
 
             using var resizedImg = img.ResizeImage(OnnxModel.Input.Width, OnnxModel.Input.Height);
             var tensorPixels = resizedImg.NormalizePixelsToTensor(OnnxModel.Input.BatchSize, OnnxModel.Input.Channels);
