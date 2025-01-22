@@ -75,12 +75,20 @@
             var modelVersion = yoloCore.OnnxModel.ModelVersion;
             var modelType = options.ModelType;
 
-            // Get dictionary from module map based on model version
-            var versionSelected = _versionModuleMap.TryGetValue(modelVersion, out var moduleMap);
-            var moduleSelected = moduleMap!.TryGetValue(modelType, out var createModule);
+            // TODO: better choosing mechanism
+            if (options.UseGPUPrePostProcess)
+            {
+                return YoloProviderFactory.GetModule((YoloCoreGPUBase)yoloCore, modelVersion, modelType);
+            }
+            else
+            {
+                // Get dictionary from module map based on model version
+                var versionSelected = _versionModuleMap.TryGetValue(modelVersion, out var moduleMap);
+                var moduleSelected = moduleMap!.TryGetValue(modelType, out var createModule);
 
-            if (versionSelected && moduleSelected)
-                return createModule!(yoloCore);
+                if (versionSelected && moduleSelected)
+                    return createModule!(yoloCore);
+            }
 
             throw new InvalidOperationException($"Unsupported detection type {modelType} or model version {modelVersion}.");
         }
@@ -92,7 +100,10 @@
         /// <returns>An initialized YoloCore instance.</returns>
         private static YoloCore InitializeYoloCore(YoloOptions options)
         {
-            var yoloCore = new YoloCore(options.OnnxModel, options.Cuda, options.PrimeGpu, options.GpuId);
+            var yoloCore = options.UseGPUPrePostProcess
+                ? YoloProviderFactory.GetCoreProvider(options.OnnxModel, options.Cuda, options.PrimeGpu, options.GpuId)
+                : new YoloCore(options.OnnxModel, options.Cuda, options.PrimeGpu, options.GpuId);
+            
             yoloCore.InitializeYolo(options);
             return yoloCore;
         }

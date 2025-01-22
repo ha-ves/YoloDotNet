@@ -13,17 +13,17 @@
         public event EventHandler VideoProgressEvent = delegate { };
         public event EventHandler VideoCompleteEvent = delegate { };
 
-        private bool _isDisposed;
+        protected bool _isDisposed;
 
-        private InferenceSession _session = default!;
-        private RunOptions _runOptions = default!;
-        private OrtIoBinding _ortIoBinding = default!;
-        private int _tensorBufferSize;
+        protected InferenceSession _session = default!;
+        protected RunOptions _runOptions = default!;
+        protected OrtIoBinding _ortIoBinding = default!;
+        protected int _tensorBufferSize;
         public ArrayPool<float> customSizeFloatPool = default!;
         public ArrayPool<ObjectResult> customSizeObjectResultPool = default!;
 
-        private readonly object _progressLock = new();
-        private SKImageInfo _imageInfo;
+        protected readonly object _progressLock = new();
+        protected SKImageInfo _imageInfo;
 
         public ParallelOptions parallelOptions = default!;
         public OnnxModel OnnxModel { get; private set; } = default!;
@@ -37,8 +37,8 @@
             _session = yoloOptions.SessionOptions is not null ?
                 new InferenceSession(onnxModel, yoloOptions.SessionOptions)
                 : useCuda
-                ? new InferenceSession(onnxModel, SessionOptions.MakeSessionOptionWithCudaProvider(gpuId))
-                : new InferenceSession(onnxModel);
+                  ? new InferenceSession(onnxModel, SessionOptions.MakeSessionOptionWithCudaProvider(gpuId))
+                  : new InferenceSession(onnxModel);
 
             _runOptions = new RunOptions();
             _ortIoBinding = _session.CreateIoBinding();
@@ -65,7 +65,7 @@
         /// </summary>
         /// <param name="image">The input image to process.</param>
         /// <returns>A read-only collection of OrtValue representing the inference results.</returns>
-        public IDisposableReadOnlyCollection<OrtValue> Run(SKImage image)
+        public virtual IDisposableReadOnlyCollection<OrtValue> Run(SKImage image)
         {
             using var resizedImage = image.ResizeImage(_imageInfo);
 

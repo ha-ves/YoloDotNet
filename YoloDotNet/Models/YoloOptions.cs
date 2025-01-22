@@ -39,5 +39,10 @@
         /// If you set this property, this will get used regardless of <see cref="Cuda"/> and <see cref="GpuId"/>.
         /// </remarks>
         public SessionOptions? SessionOptions { get; set; } = null;
+
+        /// <summary>
+        /// Use GPU capability for Pre and Post Processing
+        /// </summary>
+        public bool UseGPUPrePostProcess { get; set; } = false;
     }
 }
