@@ -34,7 +34,9 @@
         /// <param name="modelType">The type of the model to be initialized.</param>
         public void InitializeYolo(YoloOptions yoloOptions)
         {
-            _session = useCuda
+            _session = yoloOptions.SessionOptions is not null ?
+                new InferenceSession(onnxModel, yoloOptions.SessionOptions)
+                : useCuda
                 ? new InferenceSession(onnxModel, SessionOptions.MakeSessionOptionWithCudaProvider(gpuId))
                 : new InferenceSession(onnxModel);
 

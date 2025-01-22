@@ -29,5 +29,15 @@
         /// Gets or sets the ID of the GPU to use (default is 0).
         /// </summary>
         public int GpuId { get; set; } = 0;
+
+        /// <summary>
+        /// Custom <see cref="Microsoft.ML.OnnxRuntime.SessionOptions"/> overriding <see cref="Cuda"/> and <see cref="GpuId"/>.
+        /// </summary>
+        /// <remarks>
+        /// !! Mutually Exclusive with <see cref="Cuda"/> and <see cref="GpuId"/>.
+        /// <br/>
+        /// If you set this property, this will get used regardless of <see cref="Cuda"/> and <see cref="GpuId"/>.
+        /// </remarks>
+        public SessionOptions? SessionOptions { get; set; } = null;
     }
 }
